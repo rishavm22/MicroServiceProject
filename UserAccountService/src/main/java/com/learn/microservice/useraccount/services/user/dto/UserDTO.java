@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 import java.io.Serializable;
+import java.util.Random;
 
 @Data
 @RequiredArgsConstructor
@@ -11,7 +12,7 @@ public class UserDTO implements Serializable  {
 
     private static final long serialVersionUID = 121234324L;
 
-    private String id;
+    private Long id;
 
     private String firstName;
 
@@ -23,7 +24,7 @@ public class UserDTO implements Serializable  {
 
     private String encryptedPassword;
 
-    public void setUserId(String userId) {
-        this.id = userId;
+    public void setUserId() {
+        this.id = Math.abs(new Random().nextLong());
     }
 }

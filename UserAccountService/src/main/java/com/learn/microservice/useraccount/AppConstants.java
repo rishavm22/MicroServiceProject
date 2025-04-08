@@ -2,6 +2,8 @@ package com.learn.microservice.useraccount;
 
 import lombok.experimental.UtilityClass;
 
+import java.net.URI;
+
 @UtilityClass
 public class AppConstants {
 
@@ -15,4 +17,15 @@ public class AppConstants {
     public static final int TOKEN_EXPIRY = 1000 * 60 * 60;
 
     public static final int REFRESH_TOKEN_EXPIRY = 1000 * 60 * 60 * 12;
+
+
+
+    @UtilityClass
+    public static final class ErrorConstants {
+
+        public static final String ERR_VALIDATION = "error.validation";
+        public static final URI DEFAULT_TYPE = URI.create("https://abc/problem/problem-with-message");
+
+
+    }
 }

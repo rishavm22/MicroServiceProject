@@ -5,7 +5,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 
 public interface UserService extends UserDetailsService {
 
-    UserDTO createUser(UserDTO userDTO);
+    UserDTO createUser(UserDTO userDTO) throws Exception;
 
     UserDTO getUserDetailByEmail(String email);
 }
