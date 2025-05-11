@@ -10,6 +10,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -49,8 +50,9 @@ public class User implements Serializable, UserDetails, CredentialsContainer {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Stream.of(getRoles().name()).map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
+//        return Stream.of(getRoles().name()).map(SimpleGrantedAuthority::new)
+//                .collect(Collectors.toList());
+        return new ArrayList<>();
     }
 
     @Override
@@ -80,7 +82,7 @@ public class User implements Serializable, UserDetails, CredentialsContainer {
 
     @Override
     public boolean isEnabled() {
-        return active;
+        return true;
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.learn.microservice.useraccount.exceptions;
 
-import com.example.platoons.exceptions.error.ErrorCode;
+import com.learn.microservice.useraccount.exceptions.error.ErrorCode;
 import lombok.Getter;
 import org.springframework.context.support.MessageSourceAccessor;
 

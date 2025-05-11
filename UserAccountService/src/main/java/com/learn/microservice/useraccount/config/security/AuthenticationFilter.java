@@ -40,10 +40,6 @@ import static org.apache.logging.log4j.util.Strings.EMPTY;
 @WebFilter
 public class AuthenticationFilter extends OncePerRequestFilter {
 
-    private UserService userService;
-
-    private Environment env;
-
     @Autowired
     JWTService jwtService;
 

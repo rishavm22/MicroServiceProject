@@ -13,9 +13,4 @@ public class UserAccountServiceApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(UserAccountServiceApplication.class, args);
 	}
-
-	@Bean
-	public BCryptPasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
 }

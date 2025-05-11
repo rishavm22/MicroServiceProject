@@ -20,6 +20,8 @@ public class UserDTO implements Serializable  {
 
     private String email;
 
+    private Boolean active = false;
+
     private String password;
 
     private String encryptedPassword;

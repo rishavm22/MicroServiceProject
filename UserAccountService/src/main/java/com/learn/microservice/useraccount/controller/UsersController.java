@@ -16,6 +16,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/users")
 public class UsersController {
@@ -34,28 +36,13 @@ public class UsersController {
         return "UserAccountService is running on port " + env.getProperty("local.server.port");
     }
 
-    @PostMapping("/auth/reg")
-    public ResponseEntity<UserResponseDTO> createUser(@Valid @RequestBody CreateUserRequestDTO createUserRequestDTO) throws Exception {
-
-        var modelMapper = new ModelMapper();
-        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-        var userDTO = modelMapper.map(createUserRequestDTO, UserDTO.class);
-        userDTO = this.userService.createUser(userDTO);
-        var userResponseDTO = modelMapper.map(userDTO, UserResponseDTO.class);
-
-        return new ResponseEntity<>(userResponseDTO, HttpStatus.CREATED);
+    @GetMapping("/all")
+    public ResponseEntity<List<UserResponseDTO>> getAllUsers() {
+        return ResponseEntity.ok(this.userService.getAllUsers());
     }
 
-    @PostMapping("/auth/signIn")
-    public ResponseEntity<AuthResponseDTO> getAuthenticated(@RequestBody AuthRequestDTO authRequestDTO) {
-
-        var response = this.authService.sigInUser(authRequestDTO);
-        return ResponseEntity.ok(response);
-
-    }
-
-    @PostMapping("/auth/forgot-password")
-    public ResponseEntity<String> forgotPassword(@RequestBody UserDTO user) {
-        return this.authService.forgetPassword(user);
+    @PutMapping("/update/{id}")
+    public ResponseEntity<UserResponseDTO> updateUser(@PathVariable("id") Long id, @RequestBody UserDTO userDTO) {
+        return ResponseEntity.ok(this.userService.updateUser(id, userDTO));
     }
 }

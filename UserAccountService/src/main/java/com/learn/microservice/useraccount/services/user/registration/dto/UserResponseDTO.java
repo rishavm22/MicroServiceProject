@@ -7,7 +7,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserResponseDTO {
 
+    private Long id;
+
     private String firstName;
+
     private String lastName;
+
     private String email;
 }

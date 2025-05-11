@@ -4,6 +4,7 @@ import com.learn.microservice.useraccount.entities.user.User;
 import com.learn.microservice.useraccount.exceptions.UsernameException;
 import com.learn.microservice.useraccount.repository.user.UserRepository;
 import com.learn.microservice.useraccount.services.user.dto.UserDTO;
+import com.learn.microservice.useraccount.services.user.registration.dto.UserResponseDTO;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -62,6 +64,26 @@ public class UserServiceImpl implements UserService {
             throw new UsernameNotFoundException("User not found");
         }
         return new ModelMapper().map(user.get(), UserDTO.class);
+    }
+
+    @Override
+    public List<UserResponseDTO> getAllUsers() {
+        return this.userRepository.findAll().stream().map(user -> new ModelMapper().map(user, UserResponseDTO.class)).toList();
+    }
+
+    @Override
+    public UserResponseDTO updateUser(Long id, UserDTO userDTO) {
+
+        var userFromDb = this.userRepository.findById(id);
+        if (userFromDb.isEmpty()) {
+            throw new UsernameNotFoundException("User not found");
+        }
+        var user = userFromDb.get();
+        user.setFirstName(userDTO.getFirstName());
+        user.setLastName(userDTO.getLastName());
+        user.setActive(userDTO.getActive());
+        user =this.userRepository.save(user);
+        return new ModelMapper().map(user, UserResponseDTO.class);
     }
 
     @Override
