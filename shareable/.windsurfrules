@@ -1,0 +1,23 @@
+# Windsurf Rules — Project Context
+
+## On Session Start
+1. Read `.ai-context/conventions.md` — Global Rulebook. Follow strictly.
+2. Read `TODO.md` — check completed and outstanding items.
+3. Read `README.md` — architecture, services, endpoints.
+
+## Task Execution
+- **Local Context**: Read `progress.md` in folders you'll modify.
+- **Scope**: Don't read entire codebase. Use context files as map.
+- **Impact**: Check downstream effects before changing code.
+- **Verify**: Confirm approach before complex logic.
+
+## Post-Task
+- Update affected `progress.md` and root `TODO.md`.
+
+## Safety
+- No file deletion without confirmation.
+- No destructive git operations (force-push, reset --hard).
+- No secrets in tracked files.
+- No silent changes to .run/ or CI configs.
+
+See `session_init_prompt.txt` and `.ai-context/conventions.md`.

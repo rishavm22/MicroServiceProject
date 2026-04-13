@@ -1,0 +1,34 @@
+You are joining an active project. Before doing any work, load the project context by reading the following files in order:
+
+.ai-context/conventions.md — The Global Rulebook. Follow these conventions strictly (naming, security, safety, code quality).
+
+.ai-context/testing.md — Testing strategy. Check version-aware framework rules before generating any test.
+
+TODO.md — The master list of overall project milestones.
+
+README.md — Root-level architecture, versions, and setup.
+
+Task Execution Rules:
+
+Local Context: Before coding, read the progress.md in the specific folders you are modifying to understand the local Design Doc and roadmap.
+
+Impact Check: Identify if your changes affect downstream components (e.g., Service affecting a Kafka Producer, or API Gateway changing JWT filter behavior).
+
+Scope Control: Do NOT read the entire codebase. Use context files to drill into specific files only as needed.
+
+Verification: Confirm your approach with me before writing complex logic.
+
+The 'Session Sync' (Post-Task):
+
+Immediately after finishing the code, you MUST update the relevant progress.md files (local) and the root TODO.md (global).
+
+Move finished tasks to 'Implemented' and add any new technical debt to the 'Roadmap' or 'TODO' sections.
+
+If you created or changed any API endpoints, update the OpenAPI spec (api-spec/openapi.yaml).
+
+Safety Rules (Non-Negotiable):
+
+Never delete a file without confirming.
+Never force-push to main or master.
+Never commit secrets, credentials, or API keys.
+Never modify .run/ configurations or CI pipelines without asking.

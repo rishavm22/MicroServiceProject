@@ -1,0 +1,137 @@
+You are a Senior Java Architect. Your task is to initialize a 'Self-Documenting Context System' for this project. Perform a deep-scan of the entire codebase and create/update the following:
+
+## 1. Root Configuration: .ai-context/conventions.md
+Create a file at `.ai-context/conventions.md`. This is the **Global Rulebook** that future AI sessions must always follow. Include:
+
+- **Tech Stack Table**: Exact versions of JDK, framework (Spring Boot, etc.), build tool (Maven/Gradle), and all major libraries per module/service. Note any version mismatches across modules.
+- **Architecture Patterns**: Communication patterns (service discovery, event-driven, REST), security architecture (JWT, OAuth, mTLS), data layer patterns (JPA Repository, DTO mapping), and any cross-cutting concerns (filters, interceptors, exception handling).
+- **Naming Conventions**: How classes, DTOs, services, controllers, and exceptions are named across the project.
+- **Configuration Rules**: How secrets/credentials are managed, profile activation, port assignment strategy, environment variable patterns.
+- **Code Quality Rules**: Enforced patterns and anti-patterns (e.g., no hardcoded credentials, stateless auth, layered architecture).
+- **Safety Rules**: Non-negotiable constraints — no file deletion without confirming, no force-push, no secret commits, no silent infrastructure changes, no destructive git operations.
+
+## 2. Architecture Decision Records (ADRs)
+Create a directory `.ai-context/adr/`. For each significant architectural decision in the codebase, generate a lightweight ADR file (`001-topic.md`, `002-topic.md`, etc.) with exactly this 5-line format:
+
+```
+**Title: ADR-NNN — Topic**
+**Date:** YYYY-MM-DD
+**Context:** The problem or situation that required a decision.
+**Decision:** What was chosen and why.
+**Consequence:** The trade-off or ongoing implication.
+```
+
+Common ADRs for microservices: auth strategy, database choice, service discovery, config management, version compatibility.
+
+## 3. Testing Strategy: .ai-context/testing.md
+Create `.ai-context/testing.md` with:
+
+- **Version-Aware Framework Selection**: Rule that before generating tests, check pom.xml/build.gradle for framework version. For Spring Boot 3.x → JUnit 5 + AssertJ + Mockito 5. For Spring Boot 2.x (Java 11) → JUnit 5 (Boot 2.7+ supports it) + AssertJ + Mockito 4. For legacy only → JUnit 4 + Mockito 3.
+- **Test Layer Strategy**: Unit (mocked), Integration (`@SpringBootTest`), Contract tests.
+- **Test Data Factory Pattern**: Standard Hybrid Factory (Object Mother + Fluent Builder) with example code.
+- **What to Test in Priority Order**: First things to cover.
+- **Coverage Targets**: Percentage goals per layer.
+
+## 4. Folder-Level Logs (progress.md)
+In **every leaf folder** (directories containing only source files, no subdirectories) and **every module root**, create a `progress.md` containing:
+
+- **Design Doc**: Technical purpose and logic of this specific package. What problem does it solve?
+- **Dependencies**: Which other internal packages and external services/libraries this folder interacts with.
+- **Status**: A checklist of `Implemented Features` (checked) and a `Roadmap` for pending tasks (unchecked).
+- **Test Coverage Status**: A checklist of what needs to be tested, organized by component. Include at least 3-5 items per package.
+
+Leaf folders include: controller packages, service packages, repository packages, entity packages, config sub-packages, DTO packages, exception packages, utility packages. Module roots are the top-level directory of each submodule/service.
+
+## 5. Root README.md
+Update the main `README.md` at the project root to include:
+
+- **Project Brief**: A concise explanation of the application's purpose and architecture overview (include an ASCII diagram if multi-service).
+- **Detailed Tech Stack**: A dedicated section/table listing specific versions for JDK, framework versions, build tool, and all major libraries. Note which modules use which versions.
+- **Service Table**: For multi-module projects, a table with service name, port, and purpose.
+- **Setup & Execution**: Specific CLI commands to build, test, and run each service/module, including startup order.
+- **API Endpoints**: If applicable, a table of all routes, methods, target services, and auth requirements.
+- **Local Development with Secrets**: Instructions for configuring gitignored local config files (e.g., `application-local.properties`), including which files to create and what values they need.
+- **API Specification**: Path to OpenAPI spec file and Swagger UI URLs per service.
+- **Security Notes**: Current security posture and any known issues (e.g., leaked credentials in git history that need rotation).
+
+## 6. Per-Service README.md (for multi-module projects)
+Create a `README.md` inside each service/module directory containing:
+
+- **Purpose**: What this specific module does.
+- **Configuration Table**: Port, framework version, key URLs.
+- **Run Command**: Exact command to start the service.
+- **Required Local Configuration**: Which env vars or local properties files are needed, with placeholder values.
+- **Endpoints Table**: All routes exposed by this service.
+- **Architecture Overview**: Key classes (controllers, services, repositories, configs) in the module.
+- **Dependencies**: Which other services/modules this one depends on.
+- **Testing Section**: JUnit version, assertion library, mocking framework, Swagger UI URL.
+- **Roadmap**: Pending work items specific to this module.
+
+## 7. API Specification
+Create `api-spec/openapi.yaml` with OpenAPI 3.0.3 format covering all REST endpoints across all services. Include:
+- All request/response schemas
+- Security schemes (Bearer JWT, OAuth2, etc.)
+- Parameter validation (path, query, body)
+- Error response types
+
+Add Swagger/OpenAPI dependency to each service's pom.xml or build.gradle. Create OpenApiConfig class per service.
+
+## 8. IDE-Specific Rule Files
+Create rule files for AI agents used in this project:
+
+**`.claude/CLAUDE.md`**:
+```
+# Claude Code — Project Rules
+Before doing any work, read `.ai-context/conventions.md`, `TODO.md`, and `README.md`.
+Follow conventions strictly. Update progress.md and TODO.md after each task.
+```
+
+**`.cursorrules`**: Full context loading rules with safety constraints.
+
+**`.windsurfrules`**: Same structure as .cursorrules for Windsurf compatibility.
+
+**`GEMINI.md`**: Project context with tech stack summary for Gemini CLI.
+
+## 9. Secret Remediation
+If you find any hardcoded credentials, API keys, passwords, or tokens in source files or configuration:
+
+- Replace them with environment variable placeholders using the `${VAR_NAME:}` syntax.
+- Move secrets to `.env.example` (as a template) or per-service `application-local.properties` files.
+- Add a note in root `README.md` and `TODO.md` about leaked credentials that need rotation.
+- Update any IDE run configurations (`.run/` files for IntelliJ, `.vscode/` for VS Code) to use the new env var names with empty placeholder values.
+
+## 10. CI/CD
+Create `.github/workflows/ci.yml` with:
+- Build and test for all modules on push/PR to main.
+- Correct JDK version per module if they differ.
+- Maven/Gradle commands matching the project's build tool.
+
+## 11. TODO.md
+Create or update `TODO.md` at the project root:
+
+- **Completed**: Grouped by category (Secrets, AI Friendliness, Safety, etc.).
+- **Required Action**: Any immediate action the user must take (e.g., fill in secrets in IDE, rotate leaked tokens).
+- **Outstanding - Security**: Known security issues, hardcoded credentials in git history, missing auth on endpoints.
+- **Outstanding - Infrastructure**: Technical debt, version upgrades, stub implementations, scaling issues.
+
+## 12. session_init_prompt.txt
+Create `session_init_prompt.txt` — a reusable prompt that tells AI to:
+1. Load context files first (conventions.md, testing.md, TODO.md, README.md)
+2. Follow execution rules (local context, impact check, scope control, verification)
+3. Sync after task completion (update progress.md, TODO.md, openapi.yaml)
+4. Follow safety rules (no deletion, no force-push, no secrets)
+
+## 13. .gitignore
+Create or update root `.gitignore` to exclude:
+- `.env` files
+- `application-local.properties` (all modules)
+- `TODO.md` (contains security notes with tokens)
+- IDE-specific files (`.idea/`, `*.iml`, target directories)
+
+---
+
+Once initialized, provide a summary of:
+1. Project architecture and module relationships
+2. Specific versions identified (flagging any mismatches)
+3. How many files were created/updated
+4. Any credentials or secrets that were found and need rotation

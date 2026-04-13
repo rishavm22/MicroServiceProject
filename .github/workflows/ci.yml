@@ -1,0 +1,44 @@
+name: CI Build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        module:
+          - path: MicroLearnDiscovery
+            java: 17
+          - path: MicroConfigServer
+            java: 17
+          - path: APIGateway
+            java: 17
+          - path: UserAccountService
+            java: 17
+          - path: doc-manager
+            java: 11
+          - path: AccountManagment
+            java: 17
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK ${{ matrix.module.java }}
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ matrix.module.java }}
+          distribution: temurin
+
+      - name: Build ${{ matrix.module.path }}
+        working-directory: ${{ matrix.module.path }}
+        run: ./mvnw clean compile -DskipTests
+
+      - name: Test ${{ matrix.module.path }}
+        working-directory: ${{ matrix.module.path }}
+        run: ./mvnw test

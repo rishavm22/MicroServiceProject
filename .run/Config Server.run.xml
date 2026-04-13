@@ -1,0 +1,13 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Config Server" type="Application" factoryName="Application">
+    <envs>
+      <env name="CONFIG_SERVER_GIT_PASSWORD" value="Rish$Project82" />
+      <env name="CONFIG_SERVER_GIT_USERNAME" value="rishavm42@gmail.com" />
+    </envs>
+    <option name="MAIN_CLASS_NAME" value="com.learn.config.server.MicroLearnConfigServerApplication" />
+    <module name="microconfigserver" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

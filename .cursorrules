@@ -1,0 +1,24 @@
+# Cursor Rules — Project Context
+
+## On Session Start
+1. Read `.ai-context/conventions.md` — this is the Global Rulebook (tech stack, naming, security, safety). Follow it strictly.
+2. Read `TODO.md` — check what's done and what's pending.
+3. Read `README.md` — architecture overview, service table, endpoints.
+
+## Task Execution
+- **Local Context**: Before coding, read the `progress.md` in the folder you're modifying.
+- **Scope**: Do NOT read the entire codebase. Use context files as a map, then drill into specific files.
+- **Impact Check**: Identify if changes affect downstream components.
+- **Verification**: Confirm approach before writing complex logic.
+
+## Post-Task
+- Update affected `progress.md` files (local context).
+- Update `TODO.md` (global status) — move finished items to completed, add new findings to roadmap.
+
+## Safety
+- Never delete files without confirming.
+- Never force-push or run destructive git operations.
+- Never introduce secrets or credentials into tracked files.
+- Never modify `.run/` configs or CI pipelines without asking.
+
+See `session_init_prompt.txt` and `.ai-context/conventions.md` for full details.

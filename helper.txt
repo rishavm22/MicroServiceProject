@@ -1,0 +1,69 @@
+Engineering the "AI-Native" Repository: My Approach
+
+I stopped "chatting" with AI and started giving it a Contract.
+
+Most developers treat AI agents like a temporary contractor — you explain the project, it writes some code, and then it forgets everything the moment you close the tab. This "context debt" is a massive hidden cost. I spent 15 minutes re-explaining my project to AI on every single session.
+
+I decided to fix this for my Spring Boot microservices by building a Self-Sustaining Context System. Here’s how I made my project truly "AI-Native" — 34 context files, zero secrets in git, 5 architecture decision records:
+
+1. The Visual Blueprint
+
+Instead of AI guessing where things are, the project now looks like this:
+
+your-project/
+├── .ai-context/
+│   ├── conventions.md          ← Global rulebook (stack, patterns, safety)
+│   ├── testing.md              ← Version-aware test strategy
+│   └── adr/                    ← Why every major decision was made
+│       ├── 001-topic.md
+│       └── 002-topic.md
+├── api-spec/
+│   └── openapi.yaml            ← API contract all endpoints
+├── .cursorrules                ← AI tool auto-loads context
+├── GEMINI.md                   ← Same, different tool
+└── [each-service]/
+    ├── README.md               ← What this service does
+    └── [each-package]/
+        └── progress.md         ← What’s done, what’s next, what to test
+
+2. The API Contract (OpenAPI/Swagger)
+
+Instead of letting the AI "guess" endpoints by reading code, I implemented a mandatory OpenAPI spec per service. Now the AI has a strict contract to validate against when it generates or modifies controllers.
+
+3. Automated Session "Handshakes"
+
+I created a Session Initialization Protocol (session_init_prompt.txt). Every time the AI starts, it’s forced to read the Global Rulebook (conventions.md), Architecture Decisions (ADRs), Testing Strategy, and Master TODO before writing a single line of code. It onboards itself automatically.
+
+4. The "Post-Task" Sync
+
+This was the game-changer. I programmed the AI to perform a Session Sync after every task. It must:
+- Update the progress.md in the folder it just touched
+- Check off items in TODO.md
+- Remind me exactly what’s left
+
+5. Deterministic Guardrails
+
+I codified strict rules. The AI is restricted: no silent file deletions, no force-pushes, no committing secrets. These aren’t suggestions — they’re part of the project’s Global Rulebook.
+
+The Result
+
+It doesn’t matter if I touch the project today or three months from now. The moment I open my CLI, the AI gives me the complete context:
+- Exactly where we left off
+- What is already implemented
+- What’s the next milestone
+
+We are moving from "Prompt Engineering" to "Context Engineering." By making the project teach the AI, we’ve minimized token waste and maximized architectural integrity.
+
+I’d love to hear from the community! How are you handling AI context in your projects?
+
+---
+
+Want to try this yourself? I packaged the entire approach into reusable files:
+
+→ project_context_scaffold.txt — 13-step blueprint to self-document any project
+→ session_init_prompt.txt — Auto-context loader for every AI session
+→ .cursorrules / GEMINI.md / CLAUDE.md — Drop these into any repo for instant AI friendliness
+
+The lesson is simple: Don’t teach AI about your project. Make your project teach the AI.
+
+#AI #SoftwareEngineering #Microservices #SpringBoot #DeveloperExperience #OpenAPI #ContextEngineering #AgenticAI #Java17 #CleanCode

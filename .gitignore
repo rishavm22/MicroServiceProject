@@ -1,0 +1,7 @@
+.env
+TODO.md
+*.iml
+target/
+.idea/
+.claude/
+**/application-local.properties
