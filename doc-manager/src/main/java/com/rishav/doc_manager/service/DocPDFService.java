@@ -24,6 +24,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -130,6 +131,37 @@ public class DocPDFService {
                 bos.write(buffer, 0, bytesRead);
             }
             return bos.toByteArray();
+        }
+    }
+
+    public ResponseEntity<List<String>> listTemplates() {
+        try {
+            // Define the directory where templates are stored
+            String uploadDir = "uploads";
+
+            // Create the directory if it doesn't exist
+            File directory = new File(uploadDir);
+            if (!directory.exists()) {
+                directory.mkdirs();
+                return ResponseEntity.ok(new ArrayList<String>()); // Return empty list if directory was just created
+            }
+
+            // List all files in the directory
+            File[] files = directory.listFiles();
+            List<String> templateNames = new ArrayList<String>();
+
+            if (files != null) {
+                for (File file : files) {
+                    if (file.isFile()) {
+                        templateNames.add(file.getName());
+                    }
+                }
+            }
+
+            return ResponseEntity.ok(templateNames);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(null);
         }
     }
 }

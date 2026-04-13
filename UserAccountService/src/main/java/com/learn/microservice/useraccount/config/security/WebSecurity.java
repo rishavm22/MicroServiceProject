@@ -46,15 +46,21 @@ public class WebSecurity {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
 
+        var gatewayIp = env.getProperty("gateway.ip");
+
         httpSecurity.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authRequest) ->
                         authRequest
                                 .requestMatchers("/users/status/check","/users/auth/**").permitAll()
-                                .requestMatchers("/users/**").access(new WebExpressionAuthorizationManager("hasIpAddress('" + env.getProperty("gateway.ip") + "')"))
                                 .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll()
                                 .anyRequest()
-                                .authenticated())
-                .sessionManagement((s) -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                                .authenticated());
+
+        if (gatewayIp != null && !gatewayIp.isBlank()) {
+            httpSecurity.authorizeHttpRequests(auth -> auth.requestMatchers("/users/**").access(new WebExpressionAuthorizationManager("hasIpAddress('" + gatewayIp + "')")));
+        }
+
+        httpSecurity.sessionManagement((s) -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
 

@@ -35,4 +35,9 @@ public class DocPDFController {
                                               @RequestParam(value = "template", required = false) String templateName) {
         return this.docPDFService.generatePdf(data, templateName);
     }
+
+    @GetMapping("/templates")
+    public ResponseEntity<List<String>> listTemplates() {
+        return this.docPDFService.listTemplates();
+    }
 }
